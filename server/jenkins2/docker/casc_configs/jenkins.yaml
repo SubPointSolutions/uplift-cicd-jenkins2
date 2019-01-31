@@ -1,0 +1,3 @@
+---
+jenkins: 
+  systemMessage: "Build server for the Uplift project" 

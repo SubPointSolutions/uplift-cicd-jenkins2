@@ -1,0 +1,49 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+j2_enable_host_home = !ENV['ENABLE_JEKINS2_HOST_HOME'].nil?
+docker_no_cache     =  ENV['DOCKER_NO_CACHE']
+
+j2_home_dir  = "/opt/uplift-jenkins_home"
+j2_build_dir = "/opt/uplift-jenkins2"
+
+Vagrant.configure("2") do |config|
+
+  # Barge is a lightweight Linux distribution 
+  # built with Buildroot specifically to run Docker containers.
+
+  # https://app.vagrantup.com/ailispaw/boxes/barge
+  # https://github.com/bargees/barge-os
+
+  config.vm.box = "ailispaw/barge"
+  config.vm.box_check_update = false
+
+  # folder mapping
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.synced_folder "docker", j2_build_dir
+  
+  if j2_enable_host_home == true
+    config.vm.synced_folder "jenkins2_home", j2_home_dir
+  end
+
+  # 50000 - jenkins agents
+  # 10000 - jenkins ui 
+
+  config.vm.network "forwarded_port", guest: 50000, host: 50000
+  config.vm.network "forwarded_port", guest: 9085,  host: 10000
+
+  # provision - build and run container 
+  config.vm.provision "shell", path: 'docker/docker-build.sh',
+      run: "always",
+      env: {
+        'BUILD_DIR' => j2_build_dir,
+        'BUILD_NO_CACHE' => docker_no_cache
+      }
+
+  config.vm.provision "shell", path: 'docker/docker-run-vagrant.sh',
+      run: "always",
+      env: {
+        'BUILD_DIR' => j2_build_dir
+      }
+ 
+end

@@ -1,0 +1,20 @@
+# More info at https://github.com/guard/guard#readme
+
+guard :yield do
+
+    watch(%r{^(.+)\.js$}) { |m|
+       
+        file_name = m[0]
+        puts "Changed file: #{file_name}"
+
+        target_cmd = [
+            "clear",
+            "echo $(pwd)",
+            "node #{file_name}"
+        ].join(" && ")
+
+        puts "Running: #{target_cmd}"
+        system(target_cmd)
+    }
+
+end 
