@@ -1,6 +1,7 @@
 node('uplift') {
 
-    def repoPath = "X:/uplift-local-repository"
+    def repoPath = env.UPLF_JENKINS_LOCAL_REPOSITORY_PATH ?: "c:/uplift-local-repository";
+
     def resources = [
         "7z-",
         "hashicorp-",
