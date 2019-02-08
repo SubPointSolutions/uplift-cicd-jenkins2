@@ -70,3 +70,6 @@ configuration-as-code-support:latest
 job-dsl:latest
 monitoring:latest
 simple-theme-plugin:latest
+dashboard-view:latest
+categorized-view:latest
+copyartifact:latest

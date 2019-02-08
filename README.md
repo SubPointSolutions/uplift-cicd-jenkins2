@@ -229,7 +229,7 @@ node('uplift') {
 
     def imageName  = "ubuntu-trusty64"
     
-    stage('checkout') {
+    stage('Checkout') {
         sh "git clone $gitRepo || (cd $workingDir && git pull) "   
     }
 
@@ -255,7 +255,7 @@ node('uplift') {
     def machineFolder = "D:/__uplift_vm_build"
     def packerTmpDir  = "D:/__uplift_packer_tmp_dir"
 
-    stage('checkout') {
+    stage('Checkout') {
         sh "git clone $gitRepo || (cd $workingDir && git pull) "   
     }
 
@@ -286,7 +286,7 @@ node('uplift') {
     // packer won't download this iso image
     def isoUrl        = "$repoPath/ms-win-2016-iso-x64-eval/latest/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.iso"  
 
-    stage('checkout') {
+    stage('Checkout') {
         sh "git clone $gitRepo || (cd $workingDir && git pull) "   
     }
 
@@ -319,7 +319,7 @@ node('uplift') {
     // packer won't download this iso image
     def isoUrl        = "$repoPath/ms-win-2016-iso-x64-eval/latest/14393.0.160715-1616.RS1_RELEASE_SERVER_EVAL_X64FRE_EN-US.iso"  
 
-    stage('checkout') {
+    stage('Checkout') {
         sh "git clone $gitRepo || (cd $workingDir && git pull) "   
     }
 
@@ -353,7 +353,7 @@ node('uplift') {
     def machineFolder = "D:/__uplift_vm_build"
     def packerTmpDir  = "D:/__uplift_packer_tmp_dir"
 
-    stage('checkout') {
+    stage('Checkout') {
         sh "git clone $gitRepo || (cd $workingDir && git pull) "   
     }
 
