@@ -2,7 +2,9 @@
 <flow-definition plugin="workflow-job">
   <actions/>
   <keepDependencies>false</keepDependencies>
-  <properties/>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.DisableConcurrentBuildsJobProperty/>
+  </properties>
   <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps">
     <script>$SCRIPT$</script>
     <sandbox>true</sandbox>

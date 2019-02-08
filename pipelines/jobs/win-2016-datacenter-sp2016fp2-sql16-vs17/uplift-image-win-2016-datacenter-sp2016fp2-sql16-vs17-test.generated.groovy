@@ -1,5 +1,7 @@
 node('uplift') {
 
+    def jobName = env.JOB_NAME.toLowerCase();
+
     // standard uplift configuration
     def localGitRepoPath  = env.UPLF_JENKINS_GIT_REPO_PATH;
 
@@ -34,9 +36,33 @@ node('uplift') {
         }
     }
 
-    stage(imageTask) {
-        dir(upliftWorkingDir) {
-            sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' "    
+    stage('Shared Infra') {
+        // ensure that shared dc is up for the win-based image testing
+        if(jobName.startsWith("uplift-image-win-2016-")) {
+            build job: 'uplift-test-win-2016-datacenter-dc-shared-up'              
+        } else {
+            echo "n/a for the current job: $jobName"
         }
+    }
+    try {
+        stage(imageTask) {
+            dir(upliftWorkingDir) {
+                sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' "    
+            }
+        }
+    } finally {
+
+         stage('Artifacts') {
+            dir(upliftWorkingDir) {
+                
+                def imageArtifactFolder = "build-packer-ci-local/$imageName-$gitBranch"
+
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.build-container.json", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/Vagrantfile", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.vagrant-*.ps1", allowEmptyArchive: true
+
+            }
+        }
+        
     }
 }

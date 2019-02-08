@@ -46,11 +46,36 @@ node('uplift') {
         }
     }
 
-    stage(imageTask) {
-        dir(upliftWorkingDir) {
-            withCredentials([string(credentialsId: 'uplift-vagrant-cloud-auth-token', variable: 'vagrantCloudAuthToken')]) {
-                sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' -VAGRANT_CLOUD_AUTH_TOKEN $vagrantCloudAuthToken"    
+    try {
+        stage(imageTask) {
+            dir(upliftWorkingDir) {
+                withCredentials([string(credentialsId: 'uplift-vagrant-cloud-auth-token', variable: 'vagrantCloudAuthToken')]) {
+                    sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' -VAGRANT_CLOUD_AUTH_TOKEN $vagrantCloudAuthToken"    
+                }
             }
         }
+
+    } finally {
+
+         stage('Artifacts') {
+            dir(upliftWorkingDir) {
+                
+                def imageArtifactFolder = "build-packer-ci-local/$imageName-$gitBranch"
+
+                // archiveArtifacts  artifacts: "$imageArtifactFolder/box-spec/*.json", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.release-notes.md", allowEmptyArchive: true
+        
+                archiveArtifacts  artifacts: "$imageArtifactFolder/packer.json", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/variables.json", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.build-container.json", allowEmptyArchive: true
+        
+                // archiveArtifacts  artifacts: "$imageArtifactFolder/Vagrantfile", allowEmptyArchive: true
+                // archiveArtifacts  artifacts: "$imageArtifactFolder/.vagrant-*.ps1", allowEmptyArchive: true
+        
+                // archiveArtifacts  artifacts: "$imageArtifactFolder/logs/*.log", allowEmptyArchive: true 
+
+            }
+        }
+        
     }
 }
