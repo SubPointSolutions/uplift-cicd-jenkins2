@@ -1,5 +1,7 @@
 node('uplift') {
 
+    def jobName = env.JOB_NAME.toLowerCase();
+
     // standard uplift configuration
     def localGitRepoPath  = env.UPLF_JENKINS_GIT_REPO_PATH;
 
@@ -34,6 +36,15 @@ node('uplift') {
         }
     }
 
+    stage('Shared Infra') {
+        // ensure that shared dc is up for the win-based image testing
+        if(jobName.startsWith("uplift-image-win-2016-")) {
+            build job: 'uplift-test-win-2016-datacenter-dc-shared-up'              
+        } else {
+            echo "n/a for the current job: $jobName"
+        }
+    }
+    
     stage(imageTask) {
         dir(upliftWorkingDir) {
             sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' "    
