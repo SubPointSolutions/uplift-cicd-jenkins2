@@ -128,7 +128,7 @@ function Invoke-Jenkins2AgentUtil($options) {
     }
 
     function Get-SwarmAgentPath() {
-        return "swarm-client-3.5.jar"
+        return (Join-Path $PSScriptRoot "swarm-client-3.5.jar")
     }
 
     function Get-SwarmAgent() {
@@ -136,27 +136,48 @@ function Invoke-Jenkins2AgentUtil($options) {
 
         if( (Test-Path $path ) -eq $False) {
             Invoke-WebRequest -Uri (Get-SwarmAgentUrl) `
-                              -OutFile (Get-SwarmAgentPath)
+                              -OutFile (Get-SwarmAgentPath) `
+                              -UseBasicParsing
+        }
+    }
+
+    function Require-Cmder() {
+        if($null -eq $env:CMDER_ROOT) {
+            $errroMessage = [String]::Join([Environment]::NewLine, @(
+                "Cannot detect Cmder. Please run jenkins agent under cmder on windows platform: http://cmder.net"
+                "You can use choco to install it: choco install -y cmder"
+            ))
+
+            Write-ErrorMessage $errroMessage 
+            throw $errroMessage 
         }
     }
 
     function Get-OSName() {
-        $rawOS = $PSVersionTable["OS"]
+        # $PSVersionTable["OS"] won't work wel;l
+        # https://github.com/PowerShell/PowerShell/issues/1635
+        $rawOS = [Environment]::OSVersion.VersionString
 
-        if($rawOS -like "Darwin *") {
+        Write-InfoMessage "Detected OS.VersionString: $rawOS"
+
+        if($rawOS -ilike "*Darwin*") {
+
             $parts = $rawOS.Split(' ')
-
             # Darwin 18.2.0 Darwin Kernel Version 18.2.0: Mon Nov 12 20:24:46 PST 2018; root:xnu-4903.231.4~2/RELEASE_X86_64
-            return ($parts[0] + "-" + $parts[1])
-        } elseif($rawOS -like "Microsoft Windows *") {
-            $parts = $rawOS.Split(' ')
+            return ($parts[0] + "-" + $parts[1]).ToLower()
 
-            # Microsoft Windows 6.1.7601 S
-            return ($parts[0] + "-" + $parts[1] + '-' + $parts[2])
+        } elseif($rawOS -ilike "*Microsoft*") {
+            
+            # require cmder under windows
+            # it makes Jenkins agents execute sh and other commans without issues
+            Require-Cmder
+
+            # Microsoft Windows NT 10.0.17134.0 and so on
+            return ( "Windows-" + [Environment]::OSVersion.Version.ToString()).ToLower()
+
         } else {
-            throw "Unknown OS: $rawOS "
+            throw ("Unknown OS: $rawOS ")
         }
-
     }
 
     function Get-OptionValue($options, $name, $default) {
@@ -204,6 +225,8 @@ function Invoke-Jenkins2AgentUtil($options) {
 
         $userName     = Get-OptionValue $options "username" "uplift"
         $userPassword = Get-OptionValue $options "password" "uplift"
+
+        $executors    = Get-OptionValue $options "executors" "16"
         
         $agentLabels  += (Get-OptionValue $options "agentLabels" "").Split(",")
         $agentLabels  += $agentName 
@@ -227,6 +250,7 @@ function Invoke-Jenkins2AgentUtil($options) {
         Write-InfoMessage "`tuserName: $userName"
         Write-InfoMessage "`tagentName: $agentName"
         Write-InfoMessage "`tfsroot: $fsroot"
+        Write-InfoMessage "`texecutors: $executors"
 
         $agentPath = Get-SwarmAgentPath
 
@@ -239,7 +263,8 @@ function Invoke-Jenkins2AgentUtil($options) {
             -labels "$agentLabels" `
             -fsroot "$fsroot" `
             -sslFingerprints " " `
-            -disableSslVerification
+            -disableSslVerification `
+            -executors $executors
     }
 
     Write-DebugMessage "Running with options:"
