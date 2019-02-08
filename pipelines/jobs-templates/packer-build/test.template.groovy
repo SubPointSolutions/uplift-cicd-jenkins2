@@ -44,10 +44,25 @@ node('uplift') {
             echo "n/a for the current job: $jobName"
         }
     }
-    
-    stage(imageTask) {
-        dir(upliftWorkingDir) {
-            sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' "    
+    try {
+        stage(imageTask) {
+            dir(upliftWorkingDir) {
+                sh "pwsh -c 'invoke-build -packerImageName $imageName -Task $imageTask' "    
+            }
         }
+    } finally {
+
+         stage('Artifacts') {
+            dir(upliftWorkingDir) {
+                
+                def imageArtifactFolder = "build-packer-ci-local/$imageName-$gitBranch"
+
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.build-container.json", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/Vagrantfile", allowEmptyArchive: true
+                archiveArtifacts  artifacts: "$imageArtifactFolder/.vagrant-*.ps1", allowEmptyArchive: true
+
+            }
+        }
+        
     }
 }
