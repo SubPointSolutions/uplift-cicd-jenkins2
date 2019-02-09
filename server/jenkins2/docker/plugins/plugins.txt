@@ -74,3 +74,4 @@ dashboard-view:latest
 categorized-view:latest
 copyartifact:latest
 job-restrictions:latest
+slack:latest
