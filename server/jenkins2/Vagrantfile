@@ -7,6 +7,16 @@ docker_no_cache     =  ENV['DOCKER_NO_CACHE']
 j2_home_dir  = "/opt/uplift-jenkins_home"
 j2_build_dir = "/opt/uplift-jenkins2"
 
+# git branch and commit will be promoted up to the jenkins container
+# host -> vagrant vm -> docker container
+# it is used to set Jenkins system message via init.groovy.d groovy script or use 'n/a' by default
+# we need this to know on which branch we run jenkins
+
+git_branch = (`git rev-parse --abbrev-ref HEAD`).strip()
+git_commit = (`git log --pretty=format:'%h' -n 1`).strip().gsub("'",'')
+
+puts "Running on branch: #{git_branch} commit: #{git_commit}"
+
 Vagrant.configure("2") do |config|
 
   # Barge is a lightweight Linux distribution 
@@ -37,13 +47,17 @@ Vagrant.configure("2") do |config|
       run: "always",
       env: {
         'BUILD_DIR' => j2_build_dir,
-        'BUILD_NO_CACHE' => docker_no_cache
+        'BUILD_NO_CACHE' => docker_no_cache,
+        'UPLF_GIT_BRANCH' => git_branch,
+        'UPLF_GIT_COMMIT' => git_commit
       }
 
   config.vm.provision "shell", path: 'docker/docker-run-vagrant.sh',
       run: "always",
       env: {
-        'BUILD_DIR' => j2_build_dir
+        'BUILD_DIR' => j2_build_dir,
+        'UPLF_GIT_BRANCH' => git_branch,
+        'UPLF_GIT_COMMIT' => git_commit
       }
  
 end
