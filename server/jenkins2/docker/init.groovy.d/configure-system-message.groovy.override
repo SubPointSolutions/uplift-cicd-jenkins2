@@ -1,0 +1,21 @@
+#!groovy
+
+// this file must have .override extention to be replaced in the image / home dir
+// https://github.com/jenkinsci/docker#script-usage
+
+import jenkins.model.Jenkins
+
+// Jenkins - Set Jenkins system message via groovy script - #jenkins #groovy #system #message
+// https://gist.github.com/ivan-pinatti/4c546abbf98bb91d1af3c773adb195ce
+
+// parameters
+def branch = System.getenv("UPLF_GIT_BRANCH") ?: "n/a"
+def commit = System.getenv("UPLF_GIT_COMMIT") ?: "n/a"
+
+def systemMessage = "Build server for the Uplift project. Running on branch: $branch, commit: $commit"
+
+Jenkins jenkins = Jenkins.getInstance()
+
+jenkins.setSystemMessage(systemMessage)
+
+jenkins.save()

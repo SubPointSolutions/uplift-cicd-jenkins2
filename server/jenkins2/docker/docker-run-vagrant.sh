@@ -63,6 +63,8 @@ if [ -z "$CONTAINER_STATUS" ]; then
             -v $JENKINS_HOME_PATH:/var/jenkins_home \
             -e JENKINS_USER_NAME=$USER_NAME \
             -e JENKINS_USER_PASSWORD=$USER_PASS \
+            -e UPLF_GIT_BRANCH=$UPLF_GIT_BRANCH \
+            -e UPLF_GIT_COMMIT=$UPLF_GIT_COMMIT \
             $TAG    
     else 
         echo "Starting container: $CONTAINER_NAME"
