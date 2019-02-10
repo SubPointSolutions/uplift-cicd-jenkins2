@@ -1,0 +1,10 @@
+image: ubuntu
+
+test: off
+
+services:
+  - docker
+
+build_script: 
+  # build docker image
+  - cd server/jenkins2/docker && sh docker-build.sh

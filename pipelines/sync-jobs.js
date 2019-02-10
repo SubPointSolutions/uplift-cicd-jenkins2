@@ -373,6 +373,25 @@ function getVewsConfiguration() {
         ]
     });
 
+    // contrib views
+    result.push({
+        'name': `uplf-contrib`,
+        'jobs': [ 
+            {
+                name: 'Test: sp16lts-dev',
+                job: `uplift-contrib-sp16lts-dev-test`
+            },
+            {
+                name: 'Test: sp16lts-dev-spmeta2',
+                job: `uplift-contrib-sp16lts-dev-spmeta2-test`
+            },
+            {
+                name: 'Test: sp16lts-sql-dev',
+                job: `uplift-contrib-sp16lts-sql-dev-test`
+            }
+        ]
+    });
+
     return result;
 }
 
