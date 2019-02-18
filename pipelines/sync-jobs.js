@@ -392,6 +392,38 @@ function getVewsConfiguration() {
         ]
     });
 
+    // vagrant views
+    result.push({
+        'name': `uplf-vagrant`,
+        'jobs': [ 
+            {
+                name: 'vagrant box list',
+                job: `uplift-vagrant-box-list`
+            },
+            {
+                name: 'vagrant global-status',
+                job: `uplift-vagrant-global-status`
+            },
+            {
+                name: 'vagrant plugin list',
+                job: `uplift-vagrant-plugin-list`
+            },
+
+            {
+                name: 'vagrant plugin update',
+                job: `uplift-vagrant-plugin-uplift-update`
+            },
+
+            {
+                name: 'vagrant box export',
+                job: `uplift-vagrant-box-export`
+            },
+
+
+            
+        ]
+    });
+
     return result;
 }
 
