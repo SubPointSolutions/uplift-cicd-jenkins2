@@ -316,6 +316,10 @@ function getVewsConfiguration() {
         'win-2016-datacenter-app',
         'win-2016-datacenter-app-sql16',
 
+        'win-2016-datacenter-app-sql16-sp2',
+        'win-2016-datacenter-app-sql16-sp2-cu2',
+        'win-2016-datacenter-app-sql16-latest',
+
         'win-2016-datacenter-sp2016rtm-sql16-vs17',
         'win-2016-datacenter-sp2016fp1-sql16-vs17',
         'win-2016-datacenter-sp2016fp2-sql16-vs17',
