@@ -60,6 +60,36 @@ $images = @{
         'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-soe-latest-$gitBranch'
     };
 
+    # sql boxes
+    'win-2016-datacenter-app-sql16-latest' = @{
+        'FileResources' = @(
+            'ms-sql-server2016-rtm'
+            'ms-sql-server-management-studio-17.04'
+            'ms-sql-server2016-update-sp2-kb4052908'
+            'ms-sql-server2016-update-cu5-kb4475776'
+        )
+        'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-soe-latest-$gitBranch'
+    };
+
+    'win-2016-datacenter-app-sql16-sp2' = @{
+        'FileResources' = @(
+            'ms-sql-server2016-rtm'
+            'ms-sql-server-management-studio-17.04'
+            'ms-sql-server2016-update-sp2-kb4052908'
+        )
+        'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-soe-latest-$gitBranch'
+    };
+
+    'win-2016-datacenter-app-sql16-sp2-cu2' = @{
+        'FileResources' = @(
+            'ms-sql-server2016-rtm'
+            'ms-sql-server-management-studio-17.04'
+            'ms-sql-server2016-update-sp2-kb4052908'
+            'ms-sql-server2016-update-cu2-kb4340355'
+        )
+        'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-soe-latest-$gitBranch'
+    };
+
     # sharepoint boxes
     'win-2016-datacenter-sp2016rtm-sql16-vs17' = @{
         'FileResources' = @(
