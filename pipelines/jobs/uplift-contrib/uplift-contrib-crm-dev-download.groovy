@@ -12,7 +12,9 @@ node('uplift') {
         'ms-dynamics-crm90-lang-pack',
 
         'ms-dynamics-crm2016-server',
-        'ms-dynamics-crm2016-lang-pack'
+        'ms-dynamics-crm2016-server-lang-pack',
+
+        'ms-dynamics-crm2016-updates'
     ]
 
     // load env override if exists
