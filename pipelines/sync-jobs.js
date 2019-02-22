@@ -392,6 +392,10 @@ function getVewsConfiguration() {
             {
                 name: 'Test: sp16lts-sql-dev',
                 job: `uplift-contrib-sp16lts-sql-dev-test`
+            },
+            {
+                name: 'Test: uplift-contrib-crm-dev-test',
+                job: `uplift-contrib-crm-dev-test`
             }
         ]
     });
