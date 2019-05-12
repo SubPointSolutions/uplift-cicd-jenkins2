@@ -309,6 +309,7 @@ function getVewsConfiguration() {
         'ubuntu-trusty64',
 
         'win-2016-datacenter-bare',
+        'win-2019-datacenter-bare',
 
         'win-2016-datacenter-soe',
         'win-2016-datacenter-soe-latest',

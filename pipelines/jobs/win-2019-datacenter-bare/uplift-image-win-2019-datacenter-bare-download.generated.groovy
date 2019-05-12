@@ -8,11 +8,11 @@ node('uplift') {
     def invokeUpliftOptions = '-d'
 
     def resources = [
-        "ms-win-2016-iso-x64-eval"
+        "ms-win-2019-iso-x64-eval"
     ]
 
     // packer image to build, fetched from the job parameters
-    def imageName    = "win-2016-datacenter-bare"
+    def imageName    = "win-2019-datacenter-bare"
     def imageTask    = ""
    
     // additional options

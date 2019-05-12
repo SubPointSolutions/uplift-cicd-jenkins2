@@ -8,7 +8,7 @@ $images = @{
     # test box
     'ubuntu-trusty64' = @{
         'FileResources' = @(
-
+            
         )
         'ImageInputBoxName' = 'ubuntu/trusty64'
     };
@@ -16,7 +16,13 @@ $images = @{
     # soe boxes
     'win-2016-datacenter-bare' = @{
         'FileResources' = @(
-            
+            'ms-win-2016-iso-x64-eval'
+        )
+    };
+
+    'win-2019-datacenter-bare' = @{
+        'FileResources' = @(
+            'ms-win-2019-iso-x64-eval'   
         )
     };
 
