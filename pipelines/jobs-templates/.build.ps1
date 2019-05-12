@@ -2,7 +2,7 @@ $dirPath = $BuildRoot
 
 . "$dirPath/.build-helpers.ps1"
 
-$pipelinesFolder = "$dirPath/../jobs"
+$pipelinesFolder = Resolve-Path "$dirPath/../jobs"
 
 $images = @{
     # test box
@@ -90,7 +90,7 @@ $images = @{
         'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-soe-latest-$gitBranch'
     };
 
-    # sharepoint boxes
+    # sharepoint 2016 boxes
     'win-2016-datacenter-sp2016rtm-sql16-vs17' = @{
         'FileResources' = @(
             'ms-visualstudio-2017.ent-installer'
@@ -130,6 +130,28 @@ $images = @{
             'ms-sharepoint2016-rtm'
             'ms-sharepoint2016-lang-pack'
             'ms-sharepoint2016-update-2019.01.08'
+        )
+        'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-app-sql16-$gitBranch'
+    };
+
+    # sharepoint 2019 boxes
+    'win-2016-datacenter-sp2019rtm-sql16-vs17' = @{
+        'FileResources' = @(
+            'ms-visualstudio-2017.ent-installer'
+            'ms-visualstudio-2017.ent-dist-office-dev'
+            'ms-sharepoint2019-rtm'
+            'ms-sharepoint2019-lang-pack'
+        )
+        'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-app-sql16-$gitBranch'
+    };
+
+    'win-2016-datacenter-sp2019latest-sql16-vs17' = @{
+        'FileResources' = @(
+            'ms-visualstudio-2017.ent-installer'
+            'ms-visualstudio-2017.ent-dist-office-dev'
+            'ms-sharepoint2019-rtm'
+            'ms-sharepoint2019-lang-pack'
+            'ms-sharepoint2019-update-2019.04'
         )
         'ImageInputBoxName' = 'uplift-local/win-2016-datacenter-app-sql16-$gitBranch'
     };
@@ -196,9 +218,9 @@ function Build-PackerPipelines($imageName, $imageSpec, $pipelinesFolder) {
         }
         
         $fileFolder = "$pipelinesFolder/$imageName"
-        [System.IO.Directory]::CreateDirectory($fileFolder) | Out-Null        
+        New-Item -ItemType Directory -Path $fileFolder -Force | Out-Null
 
-        $filePath   = " $fileFolder/$pipelineName.generated.groovy" 
+        $filePath = "$fileFolder/$pipelineName.generated.groovy" 
 
         $utf8NoBomEncoding = New-Object System.Text.UTF8Encoding($False) 
         [System.IO.File]::WriteAllLines($filePath, $content, $utf8NoBomEncoding) 

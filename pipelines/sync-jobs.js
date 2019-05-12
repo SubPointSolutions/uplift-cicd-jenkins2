@@ -323,7 +323,10 @@ function getVewsConfiguration() {
         'win-2016-datacenter-sp2016rtm-sql16-vs17',
         'win-2016-datacenter-sp2016fp1-sql16-vs17',
         'win-2016-datacenter-sp2016fp2-sql16-vs17',
-        'win-2016-datacenter-sp2016latest-sql16-vs17'
+        'win-2016-datacenter-sp2016latest-sql16-vs17',
+
+        'win-2016-datacenter-sp2019rtm-sql16-vs17',
+        'win-2016-datacenter-sp2019latest-sql16-vs17'
     ];
 
     var result = imageNames.map(name => {
