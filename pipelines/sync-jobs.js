@@ -308,10 +308,14 @@ function getVewsConfiguration() {
     var imageNames = [
         'ubuntu-trusty64',
 
+        'win-2012r2-datacenter-bare',
         'win-2016-datacenter-bare',
         'win-2019-datacenter-bare',
 
+        'win-2012r2-datacenter-soe',
         'win-2016-datacenter-soe',
+        'win-2019-datacenter-soe',
+        
         'win-2016-datacenter-soe-latest',
 
         'win-2016-datacenter-app',

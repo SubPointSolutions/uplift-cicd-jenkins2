@@ -13,7 +13,13 @@ $images = @{
         'ImageInputBoxName' = 'ubuntu/trusty64'
     };
 
-    # soe boxes
+    # bare boxes
+    'win-2012r2-datacenter-bare' = @{
+        'FileResources' = @(
+            'ms-win2012r2-iso-x64-eval'
+        )
+    };
+
     'win-2016-datacenter-bare' = @{
         'FileResources' = @(
             'ms-win-2016-iso-x64-eval'
@@ -27,12 +33,25 @@ $images = @{
     };
 
     # soe boxes
+    'win-2012r2-datacenter-soe' = @{
+        'FileResources' = @(
+            
+        )
+    };
+
     'win-2016-datacenter-soe' = @{
         'FileResources' = @(
             
         )
     };
 
+    'win-2019-datacenter-soe' = @{
+        'FileResources' = @(
+            
+        )
+    };
+
+    # soe latest patches
     'win-2016-datacenter-soe-latest' = @{
         'FileResources' = @(
             'ms-win2016-ssu-2018.05.17-KB4132216'
